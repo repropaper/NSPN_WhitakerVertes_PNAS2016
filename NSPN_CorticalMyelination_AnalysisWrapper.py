@@ -44,6 +44,9 @@ paper_dir = os.path.join(study_dir, 'CT_MT_ANALYSES')
 
 matlab_dir = os.path.join('/usr','local','MATLAB','R2012b','bin','matlab')          ##### EDIT HERE FOR YOUR VERSION OF MATLAB!
 
+import matplotlib
+matplotlib.use('Agg')
+
 #==============================================================================
 # LOAD THE ANALYSIS CODE MODULES
 #==============================================================================

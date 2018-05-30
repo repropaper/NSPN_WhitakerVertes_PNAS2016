@@ -5,28 +5,6 @@ MAINTAINER Kirstie Whitaker <kw401@cam.ac.uk>
 # Switch to root user for installation
 USER root
 
-# Update conda and install relevant dependencies
-RUN conda update conda --yes --quiet
-RUN conda config --add channels conda-forge
-RUN conda install --yes --quiet matplotlib \
-                                mayavi \
-                                networkx \
-                                nibabel \
-                                numpy \
-                                pandas \
-                                scipy \
-                                seaborn \
-                                scikit-learn
-RUN conda update anaconda --yes --quiet
-RUN python -c "from matplotlib import font_manager"
-RUN conda clean -ay
-
-# Install dependencies in pip
-RUN pip install --upgrade --quiet pip && \
-    pip install --upgrade --quiet community \
-                                  pysurfer \
-                --ignore-installed
-
 # Install the MCR dependencies and some things we'll need and download the MCR
 # from Mathworks -silently install it. Code taken from: 
 #   https://github.com/vistalab/docker/blob/master/matlab/runtime/2015b/Dockerfile
@@ -48,5 +26,27 @@ RUN rm -rf mcr-install
 # Configure environment variables for MCR
 ENV LD_LIBRARY_PATH /opt/mcr/v90/runtime/glnxa64:/opt/mcr/v90/bin/glnxa64:/opt/mcr/v90/sys/os/glnxa64
 ENV XAPPLRESDIR /opt/mcr/v90/X11/app-defaults
+
+# Update conda and install relevant dependencies
+RUN conda update conda --yes --quiet
+RUN conda config --add channels conda-forge
+RUN conda install --yes --quiet matplotlib \
+                                mayavi \
+                                networkx \
+                                nibabel \
+                                numpy=1.10 \
+                                pandas=0.19.2 \
+                                scipy \
+                                seaborn \
+                                scikit-learn
+RUN conda update anaconda --yes --quiet
+RUN python -c "from matplotlib import font_manager"
+RUN conda clean -ay
+
+# Install dependencies in pip
+RUN pip install --upgrade --quiet pip && \
+    pip install --upgrade --quiet community \
+                                  pysurfer \
+                --ignore-installed
 
 CMD ["/bin/bash"]
